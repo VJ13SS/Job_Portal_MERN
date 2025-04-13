@@ -1,0 +1,29 @@
+.navbar{
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+    padding-block: 12px;
+    padding-inline: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .nav-right{
+    display: flex;
+    gap: 20px;
+    font-weight: 500;
+}
+
+.nav-right .user{
+    border-radius:20px;
+    padding-inline: 19px;
+    padding-block: 7px;
+    background-color: var(--main-color);
+    border: none;
+    color: white;
+}
+
+.nav-right .recruiter{
+    background-color: transparent;
+    border: none;
+    color: gray;
+}
