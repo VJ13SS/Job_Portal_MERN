@@ -1,0 +1,81 @@
+.applyjob {
+  min-height: 100vh;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  align-items: start;
+  padding: 70px;
+}
+
+.loading-screen{
+    min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px;
+}
+
+.applyjob .applyjob-job-hero,
+.applyjob-job-hero .applyjob-job-hero-left,
+.applyjob-job-info,
+.applyjob-job-info-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(218, 218, 240);
+}
+
+.applyjob-company-icon {
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.applyjob-job-info {
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+}
+
+.applyjob .applyjob-job-hero {
+  border: 2px solid var(--main-color);
+  border-radius: 5px;
+  padding: 25px;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.applyjob-job-hero .applyjob-job-hero-left {
+  gap: 20px;
+}
+
+.applyjob-job-info-icons {
+  gap: 20px;
+}
+
+.applyjob-job-info-icons span {
+  display: flex;
+  gap: 3px;
+}
+
+.applyjob button {
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding-inline: 20px;
+  padding-block: 10px;
+  margin-bottom: 10px;
+}
+
+.applyjob-job-hero-right p {
+  color: var(--main-color);
+  text-decoration: underline;
+  font-size: 13px;
+}
+
+.applyjob-job-description {
+  width: 70%;
+}

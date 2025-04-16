@@ -1,0 +1,11 @@
+footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 30px;
+    padding-block: 10px;
+}
+
+.icons img{
+    margin-right: 10px;
+}

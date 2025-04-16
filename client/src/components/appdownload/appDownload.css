@@ -1,0 +1,32 @@
+.app-download-container,.app-download{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.app-download-container{
+    margin-top: 80px;
+    
+}
+
+.app-download{
+    background-color: rgb(251, 198, 251);
+    border-radius: 10px;
+    padding-bottom: 0;
+}
+
+.app-download-left{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.app-download-left h1{
+    max-width: 70%;
+}
+
+.app-download-links{
+    display: flex;
+    gap: 20px;
+}

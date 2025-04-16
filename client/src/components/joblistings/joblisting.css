@@ -1,0 +1,106 @@
+.job-listing{
+    display: flex;
+    gap: 50px;
+}
+
+.sidebar{
+    width: 22vw;
+}
+
+.search-filter{
+    margin-bottom: 20px;
+}
+
+.search-filter h3{
+    margin-bottom: 10px;
+}
+
+.search-filter .filters{
+    display: flex;
+    gap: 5px;
+}
+
+.filters .filter{
+    padding-inline: 10px;
+    padding-block: 2px;
+    border-radius: 3px;
+    color: gray;
+    font-weight: 500;
+}
+
+.filter img{
+    cursor: pointer;
+}
+
+.title{
+    border: 1px solid rgb(93, 125, 93);
+    background-color: rgba(93, 125, 93,0.3);
+}
+
+.location{
+    border: 1px solid rgb(199, 104, 104);
+    background-color: rgba(199, 104, 104,0.3);
+}
+
+.category-filter{
+    margin-bottom: 25px;
+}
+
+.category-filter h4{
+    margin-bottom: 10px;
+    font-size: 17px;
+}
+
+.category-filter ul li{
+    margin-block: 10px;
+}
+
+ul li input{
+    margin-right: 10px;
+    scale: 1.3;
+}
+
+.job-section p{
+    margin-bottom: 20px;
+}
+
+.job-section .jobs{
+    display: grid;
+    grid-template-columns: 0.75fr 0.75fr 0.75fr;
+    gap: 10px;
+}
+
+/*This button will be displayed for smaller screens*/
+.show-filter{
+    background-color: white;
+    padding-block: 5px;
+    padding-inline: 10px;
+    border: 1px solid black;
+    margin-bottom: 30px;
+    border-radius: 3px;
+}
+
+.hide-filters{
+    display: none;
+}
+
+.pagenation{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.pagenation button{
+    padding-block: 5px;
+    padding-inline: 10px;
+    font-weight: 500;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.pagenation .highlight-page{
+    background-color: rgb(189, 189, 238);
+    
+}
