@@ -2,19 +2,16 @@
     border: 1px solid gray;
     border-radius: 5px;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
 }
 
 .jobcard .company-icon img{
     height: 30px;
 }
 
-.jobcard h4{
-    margin-block: 10px;
-}
 
-.job-info{
-    margin-block: 10px;
-}
 
 .job-info span{
     padding-inline: 5px;
@@ -28,12 +25,17 @@
     background-color: rgba(93, 125, 93,0.3);
 }
 
+.jobcard p{
+    max-width: 90%;
+    line-height: 25px;
+}
+
 .job-info .location{
     margin-right: 15px;
 }
 
 .buttons button{
-    padding-inline: 10px;
+    padding-inline: 7px;
     padding-block: 5px;
     border-radius: 3px;
 }
@@ -48,4 +50,5 @@
 .buttons .learn-more{
     border: 1px solid black;
     background-color: white;
+    color: black;
 }

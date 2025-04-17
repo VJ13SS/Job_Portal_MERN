@@ -7,6 +7,9 @@ export default function LoginPopUp({
   showRecruiterLogin,
   setShowUserLogin,
   setShowRecruiterLogin,
+  setRecruiterLoggedIn,
+  setUserLoggedIn,
+  setUserName
 }) {
   const [currentState, setCurrentState] = useState("Login");
   const [data, setData] = useState({
@@ -22,19 +25,46 @@ export default function LoginPopUp({
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if(showUserLogin){
+      setUserName(data.name)
+      setUserLoggedIn(true)
+      setShowUserLogin(false)
+    }
+    if(showRecruiterLogin){
+      setUserName(data.name)
+      setRecruiterLoggedIn(true)
+      setShowRecruiterLogin(false)
+    }
+    
+    setData({
+      name: "",
+      email: "",
+      password: "",
+    })
+  }
+
+  const handleClose = () => {
+    if(showUserLogin){
+      setUserLoggedIn(false)
+      setShowUserLogin(false)
+    }
+    if(showRecruiterLogin){
+      setRecruiterLoggedIn(false)
+      setShowRecruiterLogin(false)
+    }
+  }
+
   return (
     <div className="login-popup">
-      <form action="" className="login-popup-container">
+      <form action="" className="login-popup-container" onSubmit={handleSubmit}>
         <div className="login-popup-title">
           <h2>
             {showUserLogin ? "User's" : "Recruiter's"} {currentState}
           </h2>
           
-            <img src={assets.cross_icon} alt="" onClick={() =>
-              showUserLogin
-                ? setShowUserLogin(false)
-                : setShowRecruiterLogin(false)
-            }/>
+            <img src={assets.cross_icon} alt="" onClick={handleClose}/>
           
         </div>
         <div className="login-popup-inputs">
@@ -66,7 +96,7 @@ export default function LoginPopUp({
             onChange={onChangeHandler}
             required
           />
-          <button type="submit">
+          <button>
             {currentState == "Login" ? "Login" : "Create new Account"}
           </button>
           <div className="login-popup-condition">

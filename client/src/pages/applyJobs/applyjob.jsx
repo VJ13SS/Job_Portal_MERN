@@ -6,6 +6,7 @@ import Loading from "../../components/loading/loading";
 import { assets } from "../../assets/assets";
 import kconvert from "k-convert";
 import moment from "moment";
+import JobCard from "../../components/jobcard/jobcard";
 
 export default function ApplyJob() {
   const { id } = useParams(); //to obtail the parameters from the URL
@@ -65,17 +66,22 @@ export default function ApplyJob() {
           <p>Posted {moment(jobData.date).fromNow()}</p>
         </div>
       </div>
-      <div>
-        <div>
+      
+        <div className="apply-job-content">
           <div className="applyjob-job-description">
             <h2>Job Description</h2>
-            <div className="rich-text"
+            <div
+              className="rich-text"
               dangerouslySetInnerHTML={{ __html: jobData.description }}
             ></div>
             <button>Apply Now</button>
           </div>
+          <div className="apply-job-sidebar">
+            <h2>More Jobs from {jobData.companyId.name}</h2>
+            {jobs.filter(job => job._id !== jobData._id && job.companyId._id === jobData.companyId._id).filter(job => true).slice(0,4).map((job,index) => <JobCard key={index} job={job} />)}
+          </div>
         </div>
-      </div>
+      
     </div>
   ) : (
     <div className="loading-screen">
