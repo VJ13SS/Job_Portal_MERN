@@ -1,0 +1,35 @@
+.dashboard{
+    display: flex;
+    min-height: 100vh;
+    
+}
+
+.dashboard-left{
+    width: max(300px,20vw);
+    border-right:2px solid gray;
+    
+    padding-top: 20px;
+}
+
+.dashboard-left ul{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.dashboard-left .dashboard-icon{
+    padding: 10px;
+    display: flex;
+    gap: 7px;
+    transition: all 0.3s;
+}
+
+.dashboard-icon img{
+    width: 25px;
+}
+
+
+.active-icon{
+    background-color: rgb(216, 234, 248);
+    border-right: 5px solid var(--main-color);
+}

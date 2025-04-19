@@ -10,6 +10,7 @@ export default function Navbar({
   userName,
 }) {
   const navigate = useNavigate();
+
   return (
     <div className="navbar">
       <div className="nav-left">
@@ -22,8 +23,10 @@ export default function Navbar({
         </div>
       ) : recruiterLoggedIn ? (
         <div className="nav-right">
-          <span>Hai {userName}</span>
-          <span>Job Requests</span>
+          <span>| Welcome </span>
+          <img src={assets.company_icon}/>
+          <span> | Logout |</span>
+          
         </div>
       ) : (
         <div className="nav-right">

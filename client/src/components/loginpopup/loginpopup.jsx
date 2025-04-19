@@ -9,7 +9,7 @@ export default function LoginPopUp({
   setShowRecruiterLogin,
   setRecruiterLoggedIn,
   setUserLoggedIn,
-  setUserName
+  setUserName,
 }) {
   const [currentState, setCurrentState] = useState("Login");
   const [data, setData] = useState({
@@ -17,6 +17,7 @@ export default function LoginPopUp({
     email: "",
     password: "",
   });
+  const [companyLogo, setCompanyLogo] = useState(false);
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -26,35 +27,35 @@ export default function LoginPopUp({
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault()
-    if(showUserLogin){
-      setUserName(data.name)
-      setUserLoggedIn(true)
-      setShowUserLogin(false)
+    event.preventDefault();
+    if (showUserLogin) {
+      setUserName(data.name);
+      setUserLoggedIn(true);
+      setShowUserLogin(false);
     }
-    if(showRecruiterLogin){
-      setUserName(data.name)
-      setRecruiterLoggedIn(true)
-      setShowRecruiterLogin(false)
+    if (showRecruiterLogin) {
+      setUserName(data.name);
+      setRecruiterLoggedIn(true);
+      setShowRecruiterLogin(false);
     }
-    
+
     setData({
       name: "",
       email: "",
       password: "",
-    })
-  }
+    });
+  };
 
   const handleClose = () => {
-    if(showUserLogin){
-      setUserLoggedIn(false)
-      setShowUserLogin(false)
+    if (showUserLogin) {
+      setUserLoggedIn(false);
+      setShowUserLogin(false);
     }
-    if(showRecruiterLogin){
-      setRecruiterLoggedIn(false)
-      setShowRecruiterLogin(false)
+    if (showRecruiterLogin) {
+      setRecruiterLoggedIn(false);
+      setShowRecruiterLogin(false);
     }
-  }
+  };
 
   return (
     <div className="login-popup">
@@ -63,9 +64,8 @@ export default function LoginPopUp({
           <h2>
             {showUserLogin ? "User's" : "Recruiter's"} {currentState}
           </h2>
-          
-            <img src={assets.cross_icon} alt="" onClick={handleClose}/>
-          
+
+          <img src={assets.cross_icon} alt="" onClick={handleClose} />
         </div>
         <div className="login-popup-inputs">
           {currentState === "Login" ? (
@@ -96,6 +96,30 @@ export default function LoginPopUp({
             onChange={onChangeHandler}
             required
           />
+          {currentState === "Sign Up" && showRecruiterLogin && (
+            <>
+              <p>Upload Company Icon</p>
+              <div className="add-img-upload">
+                <label htmlFor="company-logo">
+                  <img
+                    src={
+                      companyLogo
+                        ? URL.createObjectURL(companyLogo)
+                        : assets.upload_area
+                    }
+                    alt=""
+                  />
+                </label>
+                <input
+                  type="file"
+                  onChange={(e) => setCompanyLogo(e.target.files[0])}
+                  id="company-logo"
+                  hidden
+                  required
+                />
+              </div>
+            </>
+          )}
           <button>
             {currentState == "Login" ? "Login" : "Create new Account"}
           </button>

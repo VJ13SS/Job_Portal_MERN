@@ -47,6 +47,21 @@
     gap: 25px;
 }
 
+.add-img-upload{
+    display: flex;
+    gap: 10px;
+    position: relative;
+}
+
+
+
+
+
+.login-popup-inputs label img{
+    width: 50px;
+    border-radius: 50%;
+}
+
 .login-popup-inputs input{
     outline: none;
     padding: 8px;

@@ -31,3 +31,10 @@
     border: none;
     color: gray;
 }
+
+.nav-right .navbar-dropdown{
+    position: absolute;
+    right: 0;
+    top: 70px;
+    display: none;
+}
