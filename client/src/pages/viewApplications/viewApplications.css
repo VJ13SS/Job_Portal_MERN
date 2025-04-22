@@ -1,0 +1,68 @@
+.view-applications{
+    padding: 20px;
+}
+
+
+.view-applications table td img{
+    margin-right: 10px;
+    width: 40px;
+}
+
+.view-applications table td a{
+    background-color: rgb(229, 240, 246);
+    color:var(--main-color);
+    padding: 5px;
+}
+
+.view-applications table td a img{
+    width: fit-content;
+}
+
+.view-applications table td{
+    position: relative;
+}
+
+.applicant-name{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.actions{
+    background-color: white;
+}
+.actions button{
+    background-color: white;
+    border: none;
+}
+
+.actions:hover .action-options{
+    visibility: visible;
+}
+
+.action-options{
+    position: absolute;
+    top:0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    background-color:white;
+    padding: 3px;
+    visibility: hidden;
+}
+
+.action-options button{
+    background-color: white;
+    padding: 3px;
+}
+.action-options button:hover{
+    background-color: rgb(231, 229, 229);
+}
+
+.accept{
+    color: var(--main-color);
+}
+
+.reject{
+    color: red;
+}

@@ -1,0 +1,31 @@
+.add-job{
+    padding: 15px;
+}
+
+.add-job form,.add-job-title,.add-job-description,.add-job-label,.add-job-salary{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.add-job-labels{
+    display: flex;
+    gap: 20px;
+}
+
+.add-job-title input,.add-job-salary input,.add-job-label select{
+    padding: 7px;
+}
+
+.add-job-salary input{
+    width: 30%;
+}
+
+.add-job form button{
+    background-color:black;
+    border: 1px solid black;
+    border-radius: 10px;
+    color: white;
+    width: 30%;
+    padding: 10px;
+}

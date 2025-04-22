@@ -1,0 +1,16 @@
+.manage-jobs{
+    padding: 20px;
+}
+
+
+.manage-jobs table input{
+    color: var(--main-color);
+}
+
+.manage-jobs button{
+    padding: 10px;
+    background-color: black;
+    color: white;
+    margin-top: 20px;
+    border-radius: 10px;
+}

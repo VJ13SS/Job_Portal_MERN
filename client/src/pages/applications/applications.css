@@ -54,17 +54,10 @@
 }
 
 .applications-table table{
-    border: 1px solid gray;
     width: 80%;
 }
 
-th,td{
-    border: 1px solid gray;
-    padding: 10px;
-    text-align: left;
-}
-
-td img{
+.applications-table table td img{
     margin-right: 10px;
 }
 

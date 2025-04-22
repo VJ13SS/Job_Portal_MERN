@@ -3,7 +3,7 @@ import './addJob.css'
 import Quill from 'quill'
 import { JobCategories, JobLocations } from '../../assets/assets'
 
-export default function AddJob(){
+export default function AddJob({setActiveClass}){
 
     {/*For the rescruiters to add rich text(to make the text bold,add it as points,etc we use a pacakage called quill) */}
 
@@ -23,35 +23,37 @@ export default function AddJob(){
                 theme:'snow',
             })
         }
+        setActiveClass('add')
+        
     },[])
 
     return(
         <div className="add-job">
             <form action="">
-                <div>
+                <div className='add-job-title'>
                     <p>Job Title</p>
                     <input type="text" name="" id="" placeholder='Type here' onChange={(e) => setTitle(e.target.value)} value={title} required/>
                 </div>
-                <div>
+                <div className='add-job-description'>
                     <p>Job Description</p>
                     <div ref={editorRef}>
                         {/*To use the quill editor */}
                     </div>
                 </div>
-                <div>
-                    <div>
+                <div className='add-job-labels'>
+                    <div className='add-job-label'>
                         <p>Job Category</p>
                         <select name="" id="" onChange={(e) => setCategory(e.target.value)}>
                             {JobCategories.map((category,index)=>(<option key={index} value={category}>{category}</option>))}
                         </select>
                     </div>
-                    <div>
+                    <div className='add-job-label'>
                         <p>Job Location</p>
                         <select name="" id="" onChange={(e) => setLocation(e.target.value)}>
                             {JobLocations.map((location,index)=>(<option key={index} value={location}>{location}</option>))}
                         </select>
                     </div>
-                    <div>
+                    <div className='add-job-label'>
                         <p>Job Level</p>
                         <select name="" id="" onChange={(e) => setLevel(e.target.value)}>
                             <option value="Beginner level">Beginner level</option>
@@ -60,9 +62,9 @@ export default function AddJob(){
                         </select>
                     </div>
                 </div>
-                <div>
+                <div className='add-job-salary'>
                     <p>Job Salary</p>
-                    <input type="number" name="" id="" placeholder='2500' onChange={(e) => setSalary(e.target.value)} />
+                    <input min={0} type="number" name="" id="" placeholder='2500' onChange={(e) => setSalary(e.target.value)} />
                 </div>
                 <button>Add</button>
             </form>

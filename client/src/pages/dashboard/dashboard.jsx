@@ -3,9 +3,9 @@ import "./dashboard.css";
 import { assets } from "../../assets/assets";
 import { useState } from "react";
 
-export default function Dashboard() {
+export default function Dashboard({activeClass,setActiveClass}) {
   const navigate = useNavigate();
-  const [activeClass,setActiveClass] = useState("add")
+  
 
   return (
     <div className="dashboard">
