@@ -19,14 +19,30 @@ export default function Navbar({
       {userLoggedIn ? (
         <div className="nav-right">
           <span>Hai {userName}</span>
-          <span onClick={() => navigate('/applications')}>Applied Jobs</span>
+
+          <div className="profile">
+            <img src={assets.profile_img} className="profile-img" alt="" />
+            <div className="profile-options">
+              <span onClick={() => navigate("/applications")}>
+                Applied Jobs
+              </span>
+              <span>Log Out</span>
+            </div>
+          </div>
         </div>
       ) : recruiterLoggedIn ? (
         <div className="nav-right">
           <span>| Welcome </span>
-          <img src={assets.company_icon}/>
-          <span> | Logout |</span>
           
+          <div className="profile">
+          <img src={assets.company_icon} />
+            <div className="profile-options">
+              <span onClick={() => navigate("/dashboard/add-job")}>
+                Dashboard
+              </span>
+              <span>Log Out</span>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="nav-right">

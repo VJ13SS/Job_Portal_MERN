@@ -41,7 +41,7 @@ export default function Applications() {
                     </tr>
                 </thead>
                 <tbody>
-                    {jobsApplied.map((job,index) => true ? (<tr>
+                    {jobsApplied.map((job,index) => true ? (<tr key={index}>
                         <td>
                             <img src={job.logo} alt="" />
                             {job.company}

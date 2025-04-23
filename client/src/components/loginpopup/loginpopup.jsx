@@ -17,7 +17,7 @@ export default function LoginPopUp({
     email: "",
     password: "",
   });
-  const [companyLogo, setCompanyLogo] = useState(false);
+  const [image, setImage] = useState(false);
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -28,6 +28,11 @@ export default function LoginPopUp({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if(currentState == "Sign Up"){
+      setCurrentState("Login")
+      return
+    }
+    
     if (showUserLogin) {
       setUserName(data.name);
       setUserLoggedIn(true);
@@ -96,15 +101,15 @@ export default function LoginPopUp({
             onChange={onChangeHandler}
             required
           />
-          {currentState === "Sign Up" && showRecruiterLogin && (
+          {currentState === "Sign Up" && (
             <>
-              <p>Upload Company Icon</p>
+              {showRecruiterLogin ?<p>Upload Company Icon</p>:<p>Upload Profile icon</p>}
               <div className="add-img-upload">
                 <label htmlFor="company-logo">
                   <img
                     src={
-                      companyLogo
-                        ? URL.createObjectURL(companyLogo)
+                      image
+                        ? URL.createObjectURL(image)
                         : assets.upload_area
                     }
                     alt=""
@@ -112,7 +117,7 @@ export default function LoginPopUp({
                 </label>
                 <input
                   type="file"
-                  onChange={(e) => setCompanyLogo(e.target.files[0])}
+                  onChange={(e) => setImage(e.target.files[0])}
                   id="company-logo"
                   hidden
                   required
