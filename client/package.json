@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.8.4",
     "k-convert": "^1.0.6",
     "k-converter": "^1.0.3",
     "moment": "^2.30.1",

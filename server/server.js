@@ -2,6 +2,7 @@ import express from "express"
 import cors from 'cors'
 import connectDB from "./config/db.js"
 import companyRouter from "./routes/companyRoutes.js"
+import userRouter from "./routes/userRoutes.js"
 
 
 //initialize express
@@ -17,6 +18,7 @@ app.use(express.json())
 //Routes
 app.get('/',(req,res) => res.send('API WORKING'))
 app.use('/api/company',companyRouter)
+app.use('/api/user',userRouter)
 
 //port
 const port = 5000

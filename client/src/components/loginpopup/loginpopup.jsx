@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./loginpopup.css";
 import { assets } from "../../assets/assets";
+import axios from "axios";
 
 export default function LoginPopUp({
   showUserLogin,
@@ -26,13 +27,30 @@ export default function LoginPopUp({
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if(currentState == "Sign Up"){
-      setCurrentState("Login")
-      return
+    if (currentState == "Sign Up") {
+      const formData = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        image: image,
+      };
+
+      console.log(formData);
+      const response = await axios.post(URL, formData);
+      if (response.data.success) {
+        console.log(response.data.token);
+        setCurrentState("Login");
+      } else {
+        alert(response.data.message);
+      }
+
+      return;
     }
-    
+
+    //if the current state is login
+
     if (showUserLogin) {
       setUserName(data.name);
       setUserLoggedIn(true);
@@ -103,14 +121,16 @@ export default function LoginPopUp({
           />
           {currentState === "Sign Up" && (
             <>
-              {showRecruiterLogin ?<p>Upload Company Icon</p>:<p>Upload Profile icon</p>}
+              {showRecruiterLogin ? (
+                <p>Upload Company Icon</p>
+              ) : (
+                <p>Upload Profile icon</p>
+              )}
               <div className="add-img-upload">
                 <label htmlFor="company-logo">
                   <img
                     src={
-                      image
-                        ? URL.createObjectURL(image)
-                        : assets.upload_area
+                      image ? URL.createObjectURL(image) : assets.upload_area
                     }
                     alt=""
                   />
