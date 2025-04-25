@@ -9,6 +9,7 @@ const createToken = (id) => {
 };
 
 const registerUser = async (req, res) => {
+  console.log(req.body)
   let img_filename = `${req.file.filename}`;
   const name = req.body.name;
   const email = req.body.email;

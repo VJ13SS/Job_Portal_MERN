@@ -30,16 +30,19 @@ export default function LoginPopUp({
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (currentState == "Sign Up") {
-      const formData = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        image: image,
-      };
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("image", image);
 
       console.log(formData);
-      const response = await axios.post(URL, formData);
+      const response = await axios.post(
+        "http://localhost:5000/api/user/sign-up",
+        formData
+      );
       if (response.data.success) {
+        alert("Registered new user");
         console.log(response.data.token);
         setCurrentState("Login");
       } else {
@@ -61,12 +64,6 @@ export default function LoginPopUp({
       setRecruiterLoggedIn(true);
       setShowRecruiterLogin(false);
     }
-
-    setData({
-      name: "",
-      email: "",
-      password: "",
-    });
   };
 
   const handleClose = () => {

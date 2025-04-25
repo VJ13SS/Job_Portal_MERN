@@ -4,7 +4,7 @@ import { loginUser, registerUser } from "../controllers/userController.js"
 
 const userRouter = express.Router()
 
-userRouter.post('/sign-in',upload.single("image"),registerUser)
+userRouter.post('/sign-up',upload.single("image"),registerUser)
 userRouter.post('/login',loginUser)
 
 export default userRouter
