@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./loginpopup.css";
 import { assets } from "../../assets/assets";
 import axios from "axios";
+import { AppContext } from "../../context/AppContext";
 
 export default function LoginPopUp({
   showUserLogin,
   showRecruiterLogin,
   setShowUserLogin,
   setShowRecruiterLogin,
-  setRecruiterLoggedIn,
-  setUserLoggedIn,
-  setUserName,
+  url,
 }) {
+  const {setUser} = useContext(AppContext)
   const [currentState, setCurrentState] = useState("Login");
   const [data, setData] = useState({
     name: "",
@@ -30,17 +30,14 @@ export default function LoginPopUp({
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (currentState == "Sign Up") {
-      const formData = new FormData();
+      const formData = new FormData(); //since we need to send images we use form data
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("password", data.password);
       formData.append("image", image);
 
       console.log(formData);
-      const response = await axios.post(
-        "http://localhost:5000/api/user/sign-up",
-        formData
-      );
+      const response = await axios.post(`${url}/api/user/sign-up`, formData);
       if (response.data.success) {
         alert("Registered new user");
         console.log(response.data.token);
@@ -54,25 +51,37 @@ export default function LoginPopUp({
 
     //if the current state is login
 
+    const response = await axios.post(`${url}/api/user/login`, data);
+    if (response.data.success) {
+      console.log(response.data)
+      setUser((prev) => ({
+        ...prev,
+        token:response.data.userDetails.token,
+        name: response.data.userDetails.user.name,
+        userImg: response.data.userDetails.user.image,
+        userType: response.data.userDetails.userType,
+      }));
+      localStorage.setItem("userDetails",JSON.stringify(response.data.userDetails))
+    } else {
+      alert(response.data.message);
+      return;
+    }
+
     if (showUserLogin) {
-      setUserName(data.name);
-      setUserLoggedIn(true);
       setShowUserLogin(false);
     }
     if (showRecruiterLogin) {
-      setUserName(data.name);
-      setRecruiterLoggedIn(true);
       setShowRecruiterLogin(false);
     }
   };
 
   const handleClose = () => {
     if (showUserLogin) {
-      setUserLoggedIn(false);
+      
       setShowUserLogin(false);
     }
     if (showRecruiterLogin) {
-      setRecruiterLoggedIn(false);
+      
       setShowRecruiterLogin(false);
     }
   };

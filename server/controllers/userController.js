@@ -9,7 +9,7 @@ const createToken = (id) => {
 };
 
 const registerUser = async (req, res) => {
-  console.log(req.body)
+  
   let img_filename = `${req.file.filename}`;
   const name = req.body.name;
   const email = req.body.email;
@@ -60,7 +60,7 @@ const registerUser = async (req, res) => {
 
 //user login
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { name,email, password } = req.body;
   try {
     const user = await userModel.findOne({ email });
 
@@ -75,10 +75,11 @@ const loginUser = async (req, res) => {
     }
 
     const token = createToken(user._id);
+    const userDetails = {user,token,userType:"user"}
 
-    return res.json({ success: true, token });
+    return res.json({ success: true, userDetails });
   } catch (error) {
-    console.log(errro);
+    console.log(error);
     return res.json({ success: true, message: "Error" });
   }
 };
