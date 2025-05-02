@@ -11,7 +11,7 @@ export default function LoginPopUp({
   setShowRecruiterLogin,
   url,
 }) {
-  const {setUser} = useContext(AppContext)
+  const { setUser } = useContext(AppContext);
   const [currentState, setCurrentState] = useState("Login");
   const [data, setData] = useState({
     name: "",
@@ -29,6 +29,7 @@ export default function LoginPopUp({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let response;
     if (currentState == "Sign Up") {
       const formData = new FormData(); //since we need to send images we use form data
       formData.append("name", data.name);
@@ -37,9 +38,15 @@ export default function LoginPopUp({
       formData.append("image", image);
 
       console.log(formData);
-      const response = await axios.post(`${url}/api/user/sign-up`, formData);
+
+      if (showUserLogin) {
+        response = await axios.post(`${url}/api/user/sign-up`, formData);
+      }
+      if (showRecruiterLogin) {
+        response = await axios.post(`${url}/api/company/register`, formData);
+      }
       if (response.data.success) {
-        alert("Registered new user");
+        alert(response.data.message);
         console.log(response.data.token);
         setCurrentState("Login");
       } else {
@@ -50,18 +57,26 @@ export default function LoginPopUp({
     }
 
     //if the current state is login
+    if (showUserLogin) {
+      response = await axios.post(`${url}/api/user/login`, data);
+    }
+    if (showRecruiterLogin) {
+      response = await axios.post(`${url}/api/company/login`, data);
+    }
 
-    const response = await axios.post(`${url}/api/user/login`, data);
     if (response.data.success) {
-      console.log(response.data)
+      console.log(response.data);
       setUser((prev) => ({
         ...prev,
-        token:response.data.userDetails.token,
+        token: response.data.userDetails.token,
         name: response.data.userDetails.user.name,
         userImg: response.data.userDetails.user.image,
         userType: response.data.userDetails.userType,
       }));
-      localStorage.setItem("userDetails",JSON.stringify(response.data.userDetails))
+      localStorage.setItem(
+        "userDetails",
+        JSON.stringify(response.data.userDetails)
+      );
     } else {
       alert(response.data.message);
       return;
@@ -77,11 +92,9 @@ export default function LoginPopUp({
 
   const handleClose = () => {
     if (showUserLogin) {
-      
       setShowUserLogin(false);
     }
     if (showRecruiterLogin) {
-      
       setShowRecruiterLogin(false);
     }
   };

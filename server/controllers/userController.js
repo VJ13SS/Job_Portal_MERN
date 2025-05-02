@@ -49,9 +49,8 @@ const registerUser = async (req, res) => {
     });
 
     const user = await newUser.save();
-    const token = createToken(user._id);
-
-    return res.json({ success: true, token });
+    
+    return res.json({ success: true, message:"User Created successfully" });
   } catch (error) {
     console.log(error);
     return res.json({ success: true, message: "Error" });
@@ -60,8 +59,13 @@ const registerUser = async (req, res) => {
 
 //user login
 const loginUser = async (req, res) => {
-  const { name,email, password } = req.body;
+  const { email, password } = req.body;
   try {
+
+    if (!validator.isEmail(email)) {
+      return res.json({ success: false, message: "Please enter valid email" });
+    }
+
     const user = await userModel.findOne({ email });
 
     if (!user) {
@@ -75,6 +79,7 @@ const loginUser = async (req, res) => {
     }
 
     const token = createToken(user._id);
+    //to get the details of the logged in user
     const userDetails = {user,token,userType:"user"}
 
     return res.json({ success: true, userDetails });
