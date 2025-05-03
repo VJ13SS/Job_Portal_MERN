@@ -2,13 +2,14 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import userModel from "../models/user.js";
+import jobApplicationModel from "../models/jobApplications.js";
 
 //to create a token for each user
 const createToken = (id) => {
   return jwt.sign({ id }, "random#secret");
 };
 
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   
   let img_filename = `${req.file.filename}`;
   const name = req.body.name;
@@ -58,7 +59,7 @@ const registerUser = async (req, res) => {
 };
 
 //user login
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
 
@@ -89,4 +90,32 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser };
+//apply for a job
+export const applyForJob = async (req,res) => {
+  const {jobId} = req.body
+
+  const userId = req.auth.userId
+  try {
+
+    //getting the jobs applied by the user(checking if user has alredy applied fro that job)
+    const isAlreadyApplied = await jobApplicationModel.find({jobId,userId})
+
+    if (isAlreadyApplied.length > 0) {
+      return res.json({success:false,message:"Already Applied"})
+    }
+
+
+  } catch (error) {
+    
+  }
+}
+
+//get user applied applications
+export const getUserJobApplications = async (req,res) => {
+
+}
+
+//update user profile(resume)
+export const updateUserResume = async (req,res) => {
+
+}

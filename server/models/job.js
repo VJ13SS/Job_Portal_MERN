@@ -13,7 +13,7 @@ const jobSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "company",
     required: true,
-  }, //craeting a reference with the comapany in the comapny table(connecting 2 clusters)
+  }, //craeting a reference with the comapany in the comapany collection(connecting 2 clusters)
 });
 
 

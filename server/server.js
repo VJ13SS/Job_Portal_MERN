@@ -3,6 +3,7 @@ import cors from 'cors'
 import connectDB from "./config/db.js"
 import companyRouter from "./routes/companyRoutes.js"
 import userRouter from "./routes/userRoutes.js"
+import jobRouter from "./routes/jobRoutes.js"
 
 
 //initialize express
@@ -19,6 +20,7 @@ app.use(express.json())
 app.get('/',(req,res) => res.send('API WORKING'))
 app.use('/api/company',companyRouter)
 app.use('/api/user',userRouter)
+app.use('/api/jobs',jobRouter)
 app.use('/images',express.static('uploads'))//to use the images in the uploads folder
 
 //port

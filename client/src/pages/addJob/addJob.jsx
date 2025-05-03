@@ -27,6 +27,8 @@ export default function AddJob({setActiveClass}){
         
     },[])
 
+    console.log(quillRef)
+
     return(
         <div className="add-job">
             <form action="">

@@ -11,9 +11,6 @@ companyRouter.post('/register',upload.single("image"),    registerCompany)
 //company login
 companyRouter.post('/login',loginCompany)
 
-//get company data
-companyRouter.get('/company',authMiddleware,getCompanyData)
-
 //post a job
 companyRouter.post('/post-job',authMiddleware,postJob)
 
