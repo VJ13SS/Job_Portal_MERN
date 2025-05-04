@@ -42,7 +42,7 @@ export default function Navbar({
         </div>
       ) : user.token && user.userType== "recruiter" ? (
         <div className="nav-right">
-          <span> Welcome </span>
+          <span> Welcome {user.name}</span>
 
           <div className="profile">
             <img src={assets.company_icon} />

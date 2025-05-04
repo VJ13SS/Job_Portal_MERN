@@ -4,6 +4,7 @@ import { jobsData } from "../assets/assets";
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
+  const url = "http://localhost:5000"; //base url for backend
   const [searchFilter, setSearchFilter] = useState({
     title: "",
     location: "",
@@ -22,11 +23,10 @@ export const AppContextProvider = (props) => {
   useEffect(() => {
     fetchJobs()
     if(localStorage.getItem("userDetails")){
-      console.log('hello')
-      console.log(JSON.parse(localStorage.getItem("userDetails")))
       setUser((prev) => ({
         ...prev,
         token:JSON.parse(localStorage.getItem("userDetails")).token,
+        id: JSON.parse(localStorage.getItem("userDetails")).user.id,
         name: JSON.parse(localStorage.getItem("userDetails")).user.name,
         userImg: JSON.parse(localStorage.getItem("userDetails")).user.image,
         userType: JSON.parse(localStorage.getItem("userDetails")).userType,
@@ -36,6 +36,7 @@ export const AppContextProvider = (props) => {
 
 
   const value = {
+    url,
     searchFilter,
     setSearchFilter,
     setIsSearched,

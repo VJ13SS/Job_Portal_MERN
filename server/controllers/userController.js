@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 import userModel from "../models/user.js";
 import jobApplicationModel from "../models/jobApplications.js";
+import jobsModel from "../models/job.js";
 
 //to create a token for each user
 const createToken = (id) => {
@@ -10,7 +11,6 @@ const createToken = (id) => {
 };
 
 export const registerUser = async (req, res) => {
-  
   let img_filename = `${req.file.filename}`;
   const name = req.body.name;
   const email = req.body.email;
@@ -50,8 +50,8 @@ export const registerUser = async (req, res) => {
     });
 
     const user = await newUser.save();
-    
-    return res.json({ success: true, message:"User Created successfully" });
+
+    return res.json({ success: true, message: "User Created successfully" });
   } catch (error) {
     console.log(error);
     return res.json({ success: true, message: "Error" });
@@ -62,7 +62,6 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-
     if (!validator.isEmail(email)) {
       return res.json({ success: false, message: "Please enter valid email" });
     }
@@ -81,7 +80,7 @@ export const loginUser = async (req, res) => {
 
     const token = createToken(user._id);
     //to get the details of the logged in user
-    const userDetails = {user,token,userType:"user"}
+    const userDetails = { user, token, userType: "user" };
 
     return res.json({ success: true, userDetails });
   } catch (error) {
@@ -91,31 +90,77 @@ export const loginUser = async (req, res) => {
 };
 
 //apply for a job
-export const applyForJob = async (req,res) => {
-  const {jobId} = req.body
+export const applyForJob = async (req, res) => {
+  const { jobId, userId } = req.body;
 
-  const userId = req.auth.userId
   try {
-
     //getting the jobs applied by the user(checking if user has alredy applied fro that job)
-    const isAlreadyApplied = await jobApplicationModel.find({jobId,userId})
+    const isAlreadyApplied = await jobApplicationModel.find({ jobId, userId });
 
     if (isAlreadyApplied.length > 0) {
-      return res.json({success:false,message:"Already Applied"})
+      return res.json({ success: false, message: "Already Applied" });
     }
 
+    const jobData = await jobsModel.findById(jobId);
 
+    if (!jobData) {
+      //if user hasn't applied for that job
+      return res.json({ success: false, message: "Job Not Found" });
+    }
+
+    await jobApplicationModel.create({
+      companyId: jobData.companyId,
+      userId,
+      jobId,
+      date: Date.now(),
+    });
+
+    return res.json({ success: true, message: "Applied successfully" });
   } catch (error) {
-    
+    return res.json({ success: false, message: error.message });
   }
-}
+};
 
 //get user applied applications
-export const getUserJobApplications = async (req,res) => {
+export const getUserJobApplications = async (req, res) => {
+  try {
+    const { userId } = req.body;
 
-}
+    const applications = await jobApplicationModel
+      .find({ userId })
+      .populate("companyId", "name email image")
+      .populate("jobId", "title description location category level salary")
+      .exec();
+
+    //.populate("companyId", "name email image") goes to the company model via the company collection and fetches the name email and image from there
+    //.exec executes the operations
+
+    if (!applications) {
+      return res.json({
+        success: false,
+        message: "No Job applications found for this user",
+      });
+    }
+
+    return res.json({ success: true, applications });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
 
 //update user profile(resume)
-export const updateUserResume = async (req,res) => {
+export const updateUserResume = async (req, res) => {
+  try {
+    const { userId } = req.body;
 
-}
+    const resumeFile = `${req.file.filename}`;
+
+    const userData = await userModel.findById(userId);
+    userData.resume = resumeFile;
+    await userData.save();
+
+    return res.json({ success: true, message: "Resume Updated" });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};

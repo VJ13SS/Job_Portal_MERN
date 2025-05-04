@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 import jobsModel from "../models/job.js";
+import jobApplicationModel from "../models/jobApplications.js";
 
 const createToken = (id) => {
   return jwt.sign({ id }, "random#secret");
@@ -63,7 +64,7 @@ export const loginCompany = async (req, res) => {
       return res.json({ success: false, message: "Please enter valid email" });
     }
 
-    const company = await companyModel.findOne({ email }).select("-password");
+    const company = await companyModel.findOne({ email });
 
     if (!company) {
       return res.json({ success: false, message: "Company not exists" });
@@ -85,13 +86,13 @@ export const loginCompany = async (req, res) => {
     return res.json({ success: true, userDetails });
   } catch (error) {
     console.log(error);
-    return res.json({ success: true, message: "Error" });
+    return res.json({ success: true, message: error.message });
   }
 };
 
 //post a new job
 export const postJob = async (req, res) => {
-  const { title, description, location, salary, label, category } = req.body;
+  const { title, description, location, salary, level, category } = req.body;
 
   const companyId = req.company._id;
 
@@ -103,7 +104,7 @@ export const postJob = async (req, res) => {
       salary: salary,
       companyId: companyId,
       date: Date.now(),
-      label: label,
+      level: level,
       category: category,
     });
 
@@ -123,9 +124,20 @@ export const getCompanyJobApplicants = async (req, res) => {};
 export const getCompanyPostedJobs = async (req, res) => {
   try {
     const companyId = req.company._id;
-    const jobs = await jobsModel.findOne({ companyId });
+    const jobs = await jobsModel.find({ companyId });
 
-    return res.json({ success: true, jobsData: jobs });
+    //to count the number of applicants
+    const jobsData = await Promise.all(
+      jobs.map(async (job) => {
+        //all the mongoDb queris using mongoose are promises,because its an asynchronous operation
+        //here by using Promise.all() , all the db queris will run concurrently making the code faster ..if not it will run sequentially leading to slower operation
+        const applicants = await jobApplicationModel.find({ jobId: job._id });
+
+        return { ...job.toObject(), applicants: applicants.length };
+      })
+    );
+
+    return res.json({ success: true, jobsData });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }

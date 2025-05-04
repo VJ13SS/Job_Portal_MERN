@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken";
 import companyModel from "../models/company.js";
 
 export const authMiddleware = async (req, res, next) => {
-  const token = req.headers; //to get the token of the logged in user
-
+  const token = req.headers.token; //to get the token of the logged in user
+  
   if (!token) {
     return res.json({
       success: false,

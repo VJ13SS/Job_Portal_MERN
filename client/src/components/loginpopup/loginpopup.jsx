@@ -3,6 +3,7 @@ import "./loginpopup.css";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
+import {toast} from 'react-toastify'
 
 export default function LoginPopUp({
   showUserLogin,
@@ -46,11 +47,13 @@ export default function LoginPopUp({
         response = await axios.post(`${url}/api/company/register`, formData);
       }
       if (response.data.success) {
-        alert(response.data.message);
+        //alert(response.data.message);
+        toast.success(response.data.message)
         console.log(response.data.token);
         setCurrentState("Login");
       } else {
-        alert(response.data.message);
+        //alert(response.data.message);
+        toast.error(response.data.message)
       }
 
       return;
@@ -79,6 +82,7 @@ export default function LoginPopUp({
       );
     } else {
       alert(response.data.message);
+      
       return;
     }
 
