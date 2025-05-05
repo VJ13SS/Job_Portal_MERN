@@ -1,7 +1,7 @@
 import "./manageJobs.css";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { useState,useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -21,7 +21,30 @@ export default function ManageJobs({ setActiveClass }) {
 
       if (data.success) {
         setJobs(data.jobsData.reverse()); //to get the new added jobs first
-        console.log(data.jobsData)
+        console.log(data.jobsData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  //function to change job visibility
+  const changeJobVisibility = async (id) => {
+    try {
+      const { data } = await axios.post(
+        url + "/api/company/change-visibility",
+        {
+          id,
+        },
+        { headers: { token: user.token } }
+      );
+      console.log("hello");
+
+      if (data.success) {
+        toast.success(data.message);
+        fetchCompanyJobs();
       } else {
         toast.error(data.message);
       }
@@ -36,7 +59,6 @@ export default function ManageJobs({ setActiveClass }) {
       fetchCompanyJobs();
     }
   }, [user.token]);
-
 
   return (
     <div className="manage-jobs">
@@ -60,8 +82,11 @@ export default function ManageJobs({ setActiveClass }) {
               <td>{job.location}</td>
               <td>{job.applicants}</td>
               <td>
-                <input type="checkbox" checked={job.
-visible}/>
+                <input
+                  type="checkbox"
+                  onChange={() => changeJobVisibility(job._id)}
+                  checked={job.visible}
+                />
               </td>
             </tr>
           ))}

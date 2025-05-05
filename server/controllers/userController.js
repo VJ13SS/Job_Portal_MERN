@@ -151,15 +151,17 @@ export const getUserJobApplications = async (req, res) => {
 //update user profile(resume)
 export const updateUserResume = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.body.id;
 
     const resumeFile = `${req.file.filename}`;
+    console.log(req.body,userId,resumeFile)
 
-    const userData = await userModel.findById(userId);
+    /*const userData = await userModel.findById(userId);
     userData.resume = resumeFile;
-    await userData.save();
+    await userData.save();*/
+    const userData = {}
 
-    return res.json({ success: true, message: "Resume Updated" });
+    return res.json({ success: true, userData });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }

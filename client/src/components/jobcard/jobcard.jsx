@@ -1,14 +1,17 @@
+import { useContext } from "react";
 import { assets } from "../../assets/assets";
 import "./jobcard.css";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
 
 export default function JobCard({ job }) {
   const navigate = useNavigate();
+  const {url} = useContext(AppContext)
 
   return (
     <div className="jobcard">
       <div className="company-icon">
-        <img src={assets.company_icon} alt="" />
+        <img src={`${url}/images/${job.companyId.image}`} alt="" />
       </div>
       <h4>{job.title}</h4>
       <div className="job-info">

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./applyjob.css";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
@@ -7,36 +7,59 @@ import { assets } from "../../assets/assets";
 import kconvert from "k-convert";
 import moment from "moment";
 import JobCard from "../../components/jobcard/jobcard";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function ApplyJob() {
   const { id } = useParams(); //to obtail the parameters from the URL
+  const navigate = useNavigate()
 
   const [jobData, setJobData] = useState(null);
 
-  const { jobs } = useContext(AppContext);
+  const { jobs,url,user } = useContext(AppContext);
 
   const fetchJob = async () => {
-    const data = jobs.filter((job) => job._id === id);
-
-    if (data.length != 0) {
-      setJobData(data[0]);
-      console.log(data[0]);
+    
+    try {
+      const {data} = await axios.get(url + `/api/jobs/${id}`)
+      if (data.success) {
+        setJobData(data.job)
+      }else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
     }
+    
   };
+
+  const applyHandler = async () => {
+    try {
+      if(!user.token){
+        toast.error('Login to apply for jobs')
+      }
+
+      if(!user.resume){
+        navigate('/applications')
+        toast.error('Upload Resume to apply')
+      }
+    } catch (error) {
+      
+    }
+  }
 
   useEffect(() => {
     //for the job details to be appeared on reloading the page
-    if (jobs.length > 0) {
       fetchJob();
-    }
-  }, [id, jobs]);
+    
+  }, [id]);
 
   return jobData ? (
     <div className="applyjob">
       <div className="applyjob-job-hero">
         <div className="applyjob-job-hero-left">
           <div className="applyjob-company-icon">
-            <img src={jobData.companyId.image} alt="" />
+          <img src={`${url}/images/${jobData.companyId.image}`} alt="" />
           </div>
 
           <div className="applyjob-job-info">
@@ -62,7 +85,7 @@ export default function ApplyJob() {
           </div>
         </div>
         <div className="applyjob-job-hero-right">
-          <button>Apply Now</button>
+          <button onClick={applyHandler}>Apply Now</button>
           <p>Posted {moment(jobData.date).fromNow()}</p>
         </div>
       </div>
@@ -74,7 +97,7 @@ export default function ApplyJob() {
               className="rich-text"
               dangerouslySetInnerHTML={{ __html: jobData.description }}
             ></div>
-            <button>Apply Now</button>
+            <button onClick={applyHandler}>Apply Now</button>
           </div>
           <div className="apply-job-sidebar">
             <h2>More Jobs from {jobData.companyId.name}</h2>

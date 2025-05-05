@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { jobsData } from "../assets/assets";
+import axios from "axios";
 
 export const AppContext = createContext();
 
@@ -12,28 +13,41 @@ export const AppContextProvider = (props) => {
 
   const [isSearched, setIsSearched] = useState(false);
 
-  const [jobs,setJobs] = useState([])
+  const [jobs, setJobs] = useState([]);
   const [user, setUser] = useState({});
 
   //function to fetch job data
   const fetchJobs = async () => {
-    setJobs(jobsData)
-  }
+    try {
+      const { data } = await axios.get(url + "/api/jobs");
+
+      if (data.success) {
+        setJobs(data.jobs);
+        console.log(data.jobs);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   useEffect(() => {
-    fetchJobs()
-    if(localStorage.getItem("userDetails")){
+    fetchJobs();
+    if (localStorage.getItem("userDetails")) {
       setUser((prev) => ({
         ...prev,
-        token:JSON.parse(localStorage.getItem("userDetails")).token,
-        id: JSON.parse(localStorage.getItem("userDetails")).user.id,
+        token: JSON.parse(localStorage.getItem("userDetails")).token,
+        id: JSON.parse(localStorage.getItem("userDetails")).user._id,
         name: JSON.parse(localStorage.getItem("userDetails")).user.name,
         userImg: JSON.parse(localStorage.getItem("userDetails")).user.image,
         userType: JSON.parse(localStorage.getItem("userDetails")).userType,
+        userResume: JSON.parse(localStorage.getItem("userDetails")).user.resume
+          ? JSON.parse(localStorage.getItem("userDetails")).user.resume
+          : "",//for applicants not for recruiters
       }));
     }
-  },[])
-
+  }, [localStorage.getItem("userDetails")]);
 
   const value = {
     url,
@@ -44,7 +58,7 @@ export const AppContextProvider = (props) => {
     jobs,
     setJobs,
     user,
-    setUser
+    setUser,
   };
 
   return (

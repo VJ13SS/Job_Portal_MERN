@@ -24,7 +24,7 @@ export default function Navbar({
       </div>
       {user.token && user.userType== "user" ? (
         <div className="nav-right">
-          <span>Hai {user.name}</span>
+          <span>{user.name}</span>
 
           <div className="profile">
             <img
@@ -42,10 +42,10 @@ export default function Navbar({
         </div>
       ) : user.token && user.userType== "recruiter" ? (
         <div className="nav-right">
-          <span> Welcome {user.name}</span>
+          <span>{user.name}</span>
 
           <div className="profile">
-            <img src={assets.company_icon} />
+            <img src={`${url}/images/${user.userImg}`}/>
             <div className="profile-options">
               <span onClick={() => navigate("/dashboard/add-job")}>
                 Dashboard

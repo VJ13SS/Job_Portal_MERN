@@ -38,7 +38,6 @@ export default function LoginPopUp({
       formData.append("password", data.password);
       formData.append("image", image);
 
-      console.log(formData);
 
       if (showUserLogin) {
         response = await axios.post(`${url}/api/user/sign-up`, formData);
@@ -49,7 +48,6 @@ export default function LoginPopUp({
       if (response.data.success) {
         //alert(response.data.message);
         toast.success(response.data.message)
-        console.log(response.data.token);
         setCurrentState("Login");
       } else {
         //alert(response.data.message);
@@ -68,7 +66,6 @@ export default function LoginPopUp({
     }
 
     if (response.data.success) {
-      console.log(response.data);
       setUser((prev) => ({
         ...prev,
         token: response.data.userDetails.token,
