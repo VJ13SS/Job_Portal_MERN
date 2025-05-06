@@ -5,12 +5,13 @@ import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Loading from "../../components/loading/loading";
 
 export default function ManageJobs({ setActiveClass }) {
   const navigate = useNavigate();
   const { url, user } = useContext(AppContext);
 
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState(false);
 
   //function to fetch company job applications data
   const fetchCompanyJobs = async () => {
@@ -40,15 +41,16 @@ export default function ManageJobs({ setActiveClass }) {
         },
         { headers: { token: user.token } }
       );
-      console.log("hello");
 
       if (data.success) {
         toast.success(data.message);
         fetchCompanyJobs();
       } else {
+        
         toast.error(data.message);
       }
     } catch (error) {
+      
       toast.error(error.message);
     }
   };
@@ -60,7 +62,7 @@ export default function ManageJobs({ setActiveClass }) {
     }
   }, [user.token]);
 
-  return (
+  return jobs ? jobs.length === 0 ? (<div className="manage-jobs"><p>No Jobs Avalialbe</p></div>):(
     <div className="manage-jobs">
       <table>
         <thead>
@@ -97,5 +99,5 @@ export default function ManageJobs({ setActiveClass }) {
         Add New Job
       </button>
     </div>
-  );
+  ):(<Loading />);
 }

@@ -16,8 +16,8 @@ export default function ApplyJob() {
 
   const [jobData, setJobData] = useState(null);
 
-  const { jobs,url,user } = useContext(AppContext);
-
+  const { jobs,url,user,userApplications,getUserApplicationsData } = useContext(AppContext);
+  const [isAlreadyApplied,setIsAlreadyApplied] = useState(false)
   const fetchJob = async () => {
     
     try {
@@ -39,13 +39,28 @@ export default function ApplyJob() {
         toast.error('Login to apply for jobs')
       }
 
-      if(!user.resume){
+      if(!user.userResume){
         navigate('/applications')
         toast.error('Upload Resume to apply')
       }
+
+      const {data} = await axios.post(url+"/api/user/apply",{jobId:jobData._id,userId:user.id})
+
+      if(data.success){
+        toast.success(data.message)
+        getUserApplicationsData()
+      }else{
+        toast.error(data.message)
+      }
     } catch (error) {
-      
+      toast.error(error.message)
     }
+  }
+
+  const checkAlreadyApplied = () => {
+    const hasApplied = userApplications.some(item => item.jobId._id === jobData._id)
+    setIsAlreadyApplied(hasApplied)
+
   }
 
   useEffect(() => {
@@ -54,12 +69,18 @@ export default function ApplyJob() {
     
   }, [id]);
 
+  useEffect(()=>{
+    if (userApplications.length > 0 && jobData) {
+      checkAlreadyApplied()
+    }
+  },[jobData,userApplications,id])
+
   return jobData ? (
     <div className="applyjob">
       <div className="applyjob-job-hero">
         <div className="applyjob-job-hero-left">
           <div className="applyjob-company-icon">
-          <img src={`${url}/images/${jobData.companyId.image}`} alt="" />
+          <img src={`${url}/files/${jobData.companyId.image}`} alt="" />
           </div>
 
           <div className="applyjob-job-info">
@@ -85,7 +106,7 @@ export default function ApplyJob() {
           </div>
         </div>
         <div className="applyjob-job-hero-right">
-          <button onClick={applyHandler}>Apply Now</button>
+          <button onClick={applyHandler}>{isAlreadyApplied ? 'Already Applied':"Apply Now"}</button>
           <p>Posted {moment(jobData.date).fromNow()}</p>
         </div>
       </div>
@@ -97,11 +118,18 @@ export default function ApplyJob() {
               className="rich-text"
               dangerouslySetInnerHTML={{ __html: jobData.description }}
             ></div>
-            <button onClick={applyHandler}>Apply Now</button>
+            <button onClick={applyHandler}>{isAlreadyApplied ? 'Already Applied':"Apply Now"}</button>
           </div>
+          {/*More Jobs Section */}
           <div className="apply-job-sidebar">
             <h2>More Jobs from {jobData.companyId.name}</h2>
-            {jobs.filter(job => job._id !== jobData._id && job.companyId._id === jobData.companyId._id).filter(job => true).slice(0,4).map((job,index) => <JobCard key={index} job={job} />)}
+            {jobs.filter(job => job._id !== jobData._id && job.companyId._id === jobData.companyId._id).filter(job => {
+              // Set of applied jobIds
+              const appliedJobIds = new Set(userApplications.map(app => app.jobId && app.jobId._id))
+
+              //return true if the user has not applied for the job
+              return !appliedJobIds.has(job._id)
+            }).slice(0,4).map((job,index) => <JobCard key={index} job={job} />)}
           </div>
         </div>
       

@@ -11,7 +11,7 @@ export default function JobCard({ job }) {
   return (
     <div className="jobcard">
       <div className="company-icon">
-        <img src={`${url}/images/${job.companyId.image}`} alt="" />
+        <img src={`${url}/files/${job.companyId.image}`} alt="" />
       </div>
       <h4>{job.title}</h4>
       <div className="job-info">

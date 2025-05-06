@@ -21,7 +21,7 @@ app.get('/',(req,res) => res.send('API WORKING'))
 app.use('/api/company',companyRouter)
 app.use('/api/user',userRouter)
 app.use('/api/jobs',jobRouter)
-app.use('/images',express.static('uploads'))//to use the images in the uploads folder
+app.use('/files',express.static('uploads'))//to use the images in the uploads folder
 
 //port
 const port = 5000

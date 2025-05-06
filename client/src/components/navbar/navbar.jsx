@@ -28,7 +28,7 @@ export default function Navbar({
 
           <div className="profile">
             <img
-              src={`${url}/images/${user.userImg}`}
+              src={`${url}/files/${user.userImg}`}
               className="profile-img"
               alt=""
             />
@@ -45,7 +45,7 @@ export default function Navbar({
           <span>{user.name}</span>
 
           <div className="profile">
-            <img src={`${url}/images/${user.userImg}`}/>
+            <img src={`${url}/files/${user.userImg}`}/>
             <div className="profile-options">
               <span onClick={() => navigate("/dashboard/add-job")}>
                 Dashboard

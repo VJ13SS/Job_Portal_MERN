@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./applications.css";
 import { assets, jobsApplied } from "../../assets/assets";
 import moment from "moment";
@@ -7,20 +7,17 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 export default function Applications() {
-  const [isEdit, setIsEdit] = useState(true);
+  const { url, user, setUser,userApplications,getUserApplicationsData } = useContext(AppContext);
+  const [isEdit, setIsEdit] = useState(user.userResume !== ""?false:true);
   const [resume, setResume] = useState(null);
-  const { url, user } = useContext(AppContext);
-  console.log(user)
-  const [udata, setData] = useState({ id: user.id });
+  
+  const [userDetails,setUserDetails] = useState(JSON.parse(localStorage.getItem('userDetails')))
 
   const updateResume = async () => {
-    setData((prev) => ({ ...prev, resume }));
-    console.log(user, "data");
     try {
       const formData = new FormData();
-      formData.append("id", user.email);
+      formData.append("id", user.id);
       formData.append("resume", resume);
-      console.log(formData,udata);
 
       const { data } = await axios.post(
         url + "/api/user/update-resume",
@@ -29,22 +26,36 @@ export default function Applications() {
 
       if (data.success) {
         toast.success("Resume Updated Successfully");
-        console.log(data.userDetails);
+        console.log(data, "success");
+        setUser((prev) => ({ ...prev, resume: data.userData.resume }));
+        
+        setUserDetails((prev) => ({...prev,user:{...prev.user,resume:data.userData.resume}}));
+        localStorage.setItem('userDetails',JSON.stringify(userDetails))
+
         setIsEdit(false);
+        setResume(false)
       } else {
         toast.error(data.message);
       }
+
+      //setResume(false);
     } catch (error) {
       toast.error(error.message);
     }
   };
+
+  useEffect(()=>{
+    if (user) {
+      getUserApplicationsData()
+    }
+  },[user])
 
   return (
     <div className="applications">
       <div className="resume">
         <h2>Your Resume</h2>
         <div className="resume-options">
-          {isEdit || (user && user.resume === "") ? (
+          {isEdit || (user && user.userResume === "") ? (
             <div className="resume-edit">
               <p>{resume ? resume.name : "Select Resume"}</p>
               <label htmlFor="resumeUpload">
@@ -61,7 +72,7 @@ export default function Applications() {
             </div>
           ) : (
             <div>
-              <a href="">Resume</a>
+              <a href={`${url}/files/${user.userResume}`}>{user.userResume ? user.userResume : "Resume"}</a>
               <button onClick={() => setIsEdit(true)}>Edit</button>
             </div>
           )}
@@ -78,15 +89,15 @@ export default function Applications() {
                 </tr>
               </thead>
               <tbody>
-                {jobsApplied.map((job, index) =>
+                {userApplications.map((job, index) =>
                   true ? (
                     <tr key={index}>
                       <td>
-                        <img src={job.logo} alt="" />
-                        {job.company}
+                        <img src={`${url}/files/${job.companyId.image}`} alt="" />
+                        {job.companyId.name}
                       </td>
-                      <td>{job.title}</td>
-                      <td>{job.location}</td>
+                      <td>{job.jobId.title}</td>
+                      <td>{job.jobId.location}</td>
                       <td>{moment(job.date).format("ll")}</td>
                       <td>
                         <span

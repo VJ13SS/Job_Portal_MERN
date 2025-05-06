@@ -117,6 +117,7 @@ export const applyForJob = async (req, res) => {
 
     return res.json({ success: true, message: "Applied successfully" });
   } catch (error) {
+    console.log(error.message)
     return res.json({ success: false, message: error.message });
   }
 };
@@ -125,6 +126,7 @@ export const applyForJob = async (req, res) => {
 export const getUserJobApplications = async (req, res) => {
   try {
     const { userId } = req.body;
+    
 
     const applications = await jobApplicationModel
       .find({ userId })
@@ -134,13 +136,15 @@ export const getUserJobApplications = async (req, res) => {
 
     //.populate("companyId", "name email image") goes to the company model via the company collection and fetches the name email and image from there
     //.exec executes the operations
-
-    if (!applications) {
+    
+    if (applications.length === 0) {
       return res.json({
         success: false,
         message: "No Job applications found for this user",
       });
     }
+
+    
 
     return res.json({ success: true, applications });
   } catch (error) {
@@ -151,15 +155,14 @@ export const getUserJobApplications = async (req, res) => {
 //update user profile(resume)
 export const updateUserResume = async (req, res) => {
   try {
-    const { userId } = req.body.id;
+    const id = req.body.id;
 
     const resumeFile = `${req.file.filename}`;
-    console.log(req.body,userId,resumeFile)
+    
 
-    /*const userData = await userModel.findById(userId);
+    const userData = await userModel.findById(id);
     userData.resume = resumeFile;
-    await userData.save();*/
-    const userData = {}
+    await userData.save();
 
     return res.json({ success: true, userData });
   } catch (error) {

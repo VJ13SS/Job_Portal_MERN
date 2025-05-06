@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { jobsData } from "../assets/assets";
 import axios from "axios";
+import {toast} from 'react-toastify'
 
 export const AppContext = createContext();
 
@@ -15,6 +16,7 @@ export const AppContextProvider = (props) => {
 
   const [jobs, setJobs] = useState([]);
   const [user, setUser] = useState({});
+  const [userApplications, setUserApplications] = useState([]);
 
   //function to fetch job data
   const fetchJobs = async () => {
@@ -24,6 +26,27 @@ export const AppContextProvider = (props) => {
       if (data.success) {
         setJobs(data.jobs);
         console.log(data.jobs);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  //function to fetch user applied applications data
+  const getUserApplicationsData = async () => {
+    if(user.userType !== "user"){
+      return []
+    }
+    try {
+      console.log(JSON.parse(localStorage.getItem("userDetails")).user._id)
+      const { data } = await axios.post(url + "/api/user/applications", {
+        userId: JSON.parse(localStorage.getItem("userDetails")).user._id,
+      });
+
+      if (data.success) {
+        setUserApplications(data.applications);
       } else {
         toast.error(data.message);
       }
@@ -44,8 +67,9 @@ export const AppContextProvider = (props) => {
         userType: JSON.parse(localStorage.getItem("userDetails")).userType,
         userResume: JSON.parse(localStorage.getItem("userDetails")).user.resume
           ? JSON.parse(localStorage.getItem("userDetails")).user.resume
-          : "",//for applicants not for recruiters
+          : "", //for applicants not for recruiters
       }));
+      getUserApplicationsData();
     }
   }, [localStorage.getItem("userDetails")]);
 
@@ -59,6 +83,9 @@ export const AppContextProvider = (props) => {
     setJobs,
     user,
     setUser,
+    getUserApplicationsData,
+    userApplications,
+    setUserApplications,
   };
 
   return (

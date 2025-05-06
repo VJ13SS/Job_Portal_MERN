@@ -20,7 +20,7 @@ userRouter.post("/login", loginUser);
 userRouter.post("/apply", applyForJob);
 
 //get applied jobs data
-userRouter.get("/applications", getUserJobApplications);
+userRouter.post("/applications", getUserJobApplications);
 
 //update user profile(resume)
 userRouter.post("/update-resume", upload.single("resume"), updateUserResume);
