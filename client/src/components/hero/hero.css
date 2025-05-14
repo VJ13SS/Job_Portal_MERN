@@ -51,6 +51,8 @@
 
 .trusted-by{
     display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
     justify-content: space-evenly;
     box-shadow: 5px 5px 5px rgba(0,0,0,0.2), -5px -5px 5px rgba(0,0,0,0.2);
     padding-block: 13px;
@@ -61,3 +63,5 @@
 .trusted-by img{
     height: 28px;
 }
+
+

@@ -65,8 +65,8 @@ ul li input{
 }
 
 .job-section .jobs{
-    display: grid;
-    grid-template-columns: 0.75fr 0.75fr 0.75fr;
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -103,4 +103,10 @@ ul li input{
 .pagenation .highlight-page{
     background-color: rgb(189, 189, 238);
     
+}
+
+@media (max-width:750px){
+    .job-listing{
+        flex-direction: column;
+    }
 }
